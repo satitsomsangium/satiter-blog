@@ -186,6 +186,12 @@ body {
   border-bottom: 1px solid var(--border-soft);
 }
 
+@media (max-width: 768px) {
+  .site-header-nav {
+    border-bottom: none;
+  }
+}
+
 .site-header-nav-inner {
   display: flex;
   flex-wrap: wrap;
@@ -195,7 +201,7 @@ body {
   row-gap: 10px; */
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px;
   min-height: 48px;
   box-sizing: border-box;
 }
@@ -779,10 +785,10 @@ a.popular-row {
   width: 100%;
   max-width: 420px;
   box-sizing: border-box;
-  padding: 0.35rem 0.75rem;
+  padding: 0.55rem 0.75rem;
   font: inherit;
   border: 1px solid var(--border-widget);
-  border-radius: 8px;
+  border-radius: 50px;
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;

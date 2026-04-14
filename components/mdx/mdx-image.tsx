@@ -8,8 +8,11 @@ export type MdxImageProps = {
    * Describe the image for screen readers. Use an empty string only when the image is purely decorative.
    */
   alt?: string;
+  /** Intrinsic width in pixels for `next/image` (layout / srcset). Omit to infer from `src` when possible. */
   width?: number | `${number}`;
+  /** Intrinsic height in pixels for `next/image`. Omit to infer from `src` when possible. */
   height?: number | `${number}`;
+  /** Tailwind/CSS on the wrapping `<figure>` — use for display width, e.g. `w-1/2` or `max-w-md`. */
   className?: string;
   /** Set for above-the-fold / LCP images; skips lazy loading. */
   priority?: boolean;
@@ -55,7 +58,7 @@ export function MdxImage({
   const sizes = `(max-width: ${CONTENT_MAX_WIDTH}px) 100vw, ${CONTENT_MAX_WIDTH}px`;
 
   return (
-    <figure className="my-4 mx-auto block w-full max-w-full">
+    <figure className={["my-4 mx-auto block max-w-full", className].filter(Boolean).join(" ")}>
       <Image
         src={src}
         alt={resolvedAlt}
@@ -64,8 +67,7 @@ export function MdxImage({
         sizes={sizes}
         priority={priority}
         loading={priority ? "eager" : "lazy"}
-        className={["mx-auto block h-auto w-full max-w-full rounded-xl", className].filter(Boolean).join(" ")}
-        style={{ width: "100%", height: "auto" }}
+        className="mx-auto block h-auto w-full max-w-full rounded-xl"
       />
     </figure>
   );
