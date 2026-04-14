@@ -1,0 +1,65 @@
+---
+title: "วิธีแก้ error \"A failure occurred while executing com.android.build.gradle.internal.tasks.Workers$ActionFacade\""
+description: "แก้ Gradle VerifyException ตอน mergeDebugJavaResource ด้วยการตั้งค่า JVM locale ใน gradle.properties"
+date: "2021-05-17"
+tags: ["กันลืม", "android", "Flutter"]
+coverImage: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcvGI5OR2IyxQ9tGfpWFc7hEnrieH082o8LUhNAX4yagMZgXjMHyYCbTsaeXLf9Hafk09e4JQbao-wm4G4E5CGEinla3st7zRf0AVwDJ1OgSjj_XHqBDShQlbvjv4kyv4qukYWWcQcdVc/s1344/flutter.webp"
+isPopular: true
+published: true
+featured: true
+---
+
+![Flutter Error](
+  https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcvGI5OR2IyxQ9tGfpWFc7hEnrieH082o8LUhNAX4yagMZgXjMHyYCbTsaeXLf9Hafk09e4JQbao-wm4G4E5CGEinla3st7zRf0AVwDJ1OgSjj_XHqBDShQlbvjv4kyv4qukYWWcQcdVc/w640-h480/flutter.webp
+)
+
+![Screenshot Error Log](
+  https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEikDluNE053yqAcp5IEypYsRKVqHYFsVS7XXtSuXc6JWZGhbqWwI8mPwJIX9WpSY-I1GimfhmR_g8EswMxaesVDYwJGNszLa3oG7K0RQuElqKZAtIS66G5wr21vae2oi31YoXXSBJqJgfk/w640-h360/%25E0%25B8%25A0%25E0%25B8%25B2%25E0%25B8%259E%25E0%25B8%2596%25E0%25B9%2588%25E0%25B8%25B2%25E0%25B8%25A2%25E0%25B8%25AB%25E0%25B8%2599%25E0%25B9%2589%25E0%25B8%25B2%25E0%25B8%2588%25E0%25B8%25AD+2564-05-17+%25E0%25B9%2580%25E0%25B8%25A7%25E0%25B8%25A5%25E0%25B8%25B2+03.39.53.png
+)
+
+```text
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:mergeDebugJavaResource'.
+
+> A failure occurred while executing com.android.build.gradle.internal.tasks.Workers$ActionFacade
+> com.google.common.base.VerifyException (no error message)
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 13s
+Exception: Gradle task assembleDebug failed with exit code 1
+Exited (sigterm)
+```
+
+## วิธีแก้
+
+ในไฟล์ `gradle.properties`
+
+![gradle.properties location](
+  https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjMmOHK3-Ua5QA7FZdQNWaWecvXxLDcCVyHrMob0y8PgIeOcL543j6TPWAzjXOdwuaqYYcEhQvxmqTDgdL-hY9tFKvBEFzpAfLOosmXYNnCVbFWChSkwoTJFUlvNqUFtuVIIInaeHWKtDs/w484-h640/%25E0%25B8%25A0%25E0%25B8%25B2%25E0%25B8%259E%25E0%25B8%2596%25E0%25B9%2588%25E0%25B8%25B2%25E0%25B8%25A2%25E0%25B8%25AB%25E0%25B8%2599%25E0%25B9%2589%25E0%25B8%25B2%25E0%25B8%2588%25E0%25B8%25AD+2564-05-17+%25E0%25B9%2580%25E0%25B8%25A7%25E0%25B8%25A5%25E0%25B8%25B2+03.43.53.png
+)
+
+**ให้เปลี่ยน**
+
+```properties
+org.gradle.jvmargs=-Xmx1536m
+```
+
+![Before update](
+  https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidtTBbdw4HNe1wzKnmf2lo1IHwlTOzVeqR8yf8592Z_N8DmVirMfVWT4suSGmMzKEa2xuf-YPHYgb4cFZDuCHqIOYHUH6O2Xe12IPZ4oEqAcasc22VrdDI8wA-sOtPsWukv9I3l5q-hkY/w640-h170/%25E0%25B8%25A0%25E0%25B8%25B2%25E0%25B8%259E%25E0%25B8%2596%25E0%25B9%2588%25E0%25B8%25B2%25E0%25B8%25A2%25E0%25B8%25AB%25E0%25B8%2599%25E0%25B9%2589%25E0%25B8%25B2%25E0%25B8%2588%25E0%25B8%25AD+2564-05-17+%25E0%25B9%2580%25E0%25B8%25A7%25E0%25B8%25A5%25E0%25B8%25B2+03.42.44.png
+)
+
+**เป็น**
+
+```properties
+org.gradle.jvmargs=-Xmx1536m -Duser.country=US -Duser.language=en
+```
+
+![After update](
+  https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEib66fMSqZt5T20OhY2ZsOfspdjpM0yeMVftdiwWDVeRGQdePPtk0jyS9PNuS67yCTQLsrBj-XoBSkLM3JeMg7fIL_-3Rhn0TFbi5ChgahiLPZumEu1o0VvC0hFjigSieqJyDHkChtIfV8/s656/%25E0%25B8%25A0%25E0%25B8%25B2%25E0%25B8%259E%25E0%25B8%2596%25E0%25B9%2588%25E0%25B8%25B2%25E0%25B8%25A2%25E0%25B8%25AB%25E0%25B8%2599%25E0%25B9%2589%25E0%25B8%25B2%25E0%25B8%2588%25E0%25B8%25AD+2564-05-17+%25E0%25B9%2580%25E0%25B8%25A7%25E0%25B8%25A5%25E0%25B8%25B2+03.43.07.png
+)

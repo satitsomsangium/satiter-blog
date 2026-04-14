@@ -1,13 +1,27 @@
-/** ต้นทางเว็บแบบไม่มี slash ท้าย — ตั้งใน `.env` เป็น `NEXT_PUBLIC_SITE_URL=https://โดเมนของคุณ` */
-export function getSiteOrigin(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "") ?? "";
+/**
+ * Canonical site origin without trailing slash.
+ * Prefer `NEXT_PUBLIC_SITE_URL`; on Vercel previews fall back to `VERCEL_URL`.
+ */
+export function getBaseUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
+  if (explicit) {
+    return explicit;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`;
+  }
+  return "http://localhost:3000";
 }
 
-/** URL แบบเต็มของหน้าโพสต์ สำหรับปุ่มแชร์ (Facebook ฯลฯ ต้องเป็น absolute URL) */
+export function getSiteOrigin(): string {
+  return getBaseUrl();
+}
+
+/** Absolute URL for a post — used by share buttons and metadata. */
 export function getCanonicalPostUrl(slug: string): string {
   const origin = getSiteOrigin();
   if (!origin) {
     return "";
   }
-  return `${origin}/posts/${slug}`;
+  return `${origin}/blog/${slug}`;
 }
