@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { BlogLayout } from "@/components/layout/blog-layout";
-import { PostComments } from "@/components/blog/post-comments";
 import { PostShare } from "@/components/blog/post-share";
 import { RelatedPosts } from "@/components/blog/related-posts";
 import { Sidebar } from "@/components/blog/sidebar";
@@ -92,7 +91,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <PostShare title={meta.title} url={shareUrl} />
           <div className="post-content">{content}</div>
           <RelatedPosts posts={related} />
-          <PostComments />
         </article>
       }
       sidebar={<Sidebar popularPosts={popularPosts} featuredPost={featuredPost} tagsWithCounts={tagsWithCounts} />}

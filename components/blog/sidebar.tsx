@@ -56,6 +56,7 @@ export function Sidebar({ popularPosts, featuredPost, tagsWithCounts, showAds = 
                 sizes="340px"
                 className="object-cover"
                 priority
+                loading="eager"
               />
             </span>
             <p className="featured-date">{formatDateThai(featuredPost.date)}</p>

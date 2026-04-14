@@ -23,6 +23,7 @@ export function PostCard({ slug, title, dateText, coverImage, tags, priority = f
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover"
             priority={priority}
+            loading={priority ? "eager" : "lazy"}
           />
         </div>
         <p className="post-date">{dateText}</p>

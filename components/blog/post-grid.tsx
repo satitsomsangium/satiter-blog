@@ -1,5 +1,6 @@
 import type { PostMeta } from "@/types/post";
 import { formatDateThai } from "@/lib/utils/date";
+import { POSTS_PER_PAGE } from "@/lib/utils/pagination";
 
 import { PostCard } from "./post-card";
 
@@ -13,8 +14,11 @@ type PostGridProps = {
 const gridClass =
   "post-grid grid w-full grid-cols-1 gap-x-3 gap-y-5 sm:grid-cols-2 lg:grid-cols-3";
 
-/** การ์ดแถวแรกบน grid (สูงสุด 3 คอลัมน์) — `priority` ช่วย LCP โดยไม่ preload มากเกินไป */
-const PRIORITY_CARD_COUNT = 3;
+/**
+ * โหลด cover แบบ eager สูงสุดเท่าจำนวนการ์ดต่อหน้า (`POSTS_PER_PAGE` = 12 บนหน้าแรก)
+ * เพื่อกัน LCP ไปโดนการ์ดล่างที่ยังอยู่ใน viewport บนจอสูง / กว้าง
+ */
+const PRIORITY_CARD_COUNT = POSTS_PER_PAGE;
 
 export function PostGrid({ posts, as = "section", ariaLabel = "Latest posts" }: PostGridProps) {
   const cards = posts.map((post, index) => (
