@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 type PostShareProps = {
   title: string;
@@ -46,6 +46,7 @@ function readClientHref() {
 
 export function PostShare({ title, url }: PostShareProps) {
   const [copied, setCopied] = useState(false);
+  const [canNativeShare, setCanNativeShare] = useState(false);
 
   const clientHref = useSyncExternalStore(
     () => () => {},
@@ -86,7 +87,9 @@ export function PostShare({ title, url }: PostShareProps) {
       ]
     : [];
 
-  const canNativeShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
+  useEffect(() => {
+    setCanNativeShare(typeof navigator.share === "function");
+  }, []);
 
   async function copyLink() {
     if (!pageUrl) return;

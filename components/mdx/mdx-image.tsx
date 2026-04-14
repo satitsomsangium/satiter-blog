@@ -55,16 +55,18 @@ export function MdxImage({
   const sizes = `(max-width: ${CONTENT_MAX_WIDTH}px) 100vw, ${CONTENT_MAX_WIDTH}px`;
 
   return (
-    <Image
-      src={src}
-      alt={resolvedAlt}
-      width={width}
-      height={height}
-      sizes={sizes}
-      priority={priority}
-      loading={priority ? "eager" : "lazy"}
-      className={["mx-auto my-4 block h-auto w-full max-w-full rounded-xl", className].filter(Boolean).join(" ")}
-      style={{ width: "100%", height: "auto" }}
-    />
+    <figure className="my-4 mx-auto block w-full max-w-full">
+      <Image
+        src={src}
+        alt={resolvedAlt}
+        width={width}
+        height={height}
+        sizes={sizes}
+        priority={priority}
+        loading={priority ? "eager" : "lazy"}
+        className={["mx-auto block h-auto w-full max-w-full rounded-xl", className].filter(Boolean).join(" ")}
+        style={{ width: "100%", height: "auto" }}
+      />
+    </figure>
   );
 }
