@@ -21,7 +21,7 @@ export function GiscusComments() {
   }
 
   return (
-    <div className="mt-10 border-t border-[var(--border-soft)] pt-6">
+    <div className="mt-10 border-t border-gray-100 pt-6">
       <Giscus
         id="comments"
         repo={repo as `${string}/${string}`}

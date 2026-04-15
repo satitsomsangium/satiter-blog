@@ -1,7 +1,8 @@
+import { FeedSearch } from "@/components/blog/feed-search";
 import { PostGrid } from "@/components/blog/post-grid";
 import { PostPagination } from "@/components/blog/post-pagination";
-import { BlogLayout } from "@/components/layout/blog-layout";
 import { Sidebar } from "@/components/blog/sidebar";
+import { BlogLayout } from "@/components/layout/blog-layout";
 import { getPostsByTag, getSidebarData, getTagsWithCounts } from "@/lib/posts";
 import { clampPage, getTotalPages, parsePageParam, sliceForPage } from "@/lib/utils/pagination";
 
@@ -30,9 +31,10 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
     <BlogLayout
       main={
         <>
-          <header className="mb-5 border-b-2 border-[var(--border-soft)] pb-4">
-            <h1 className="text-[18px] font-bold leading-snug text-[var(--title-color)]">แท็ก: {tag}</h1>
-            <p className="post-meta mt-1">{posts.length} โพสต์</p>
+          <FeedSearch />
+          <header className="mb-6 px-4 md:px-0">
+            <h1 className="text-xl font-bold text-[#111] md:text-2xl">แท็ก: {tag}</h1>
+            <p className="mt-1 text-[13px] text-gray-400">{posts.length} โพสต์</p>
           </header>
           <PostGrid posts={pagePosts} />
           <PostPagination currentPage={page} totalPages={totalPages} pathname={pathname} />

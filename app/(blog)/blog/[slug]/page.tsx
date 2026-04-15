@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { BlogLayout } from "@/components/layout/blog-layout";
 import { PostShare } from "@/components/blog/post-share";
 import { RelatedPosts } from "@/components/blog/related-posts";
 import { Sidebar } from "@/components/blog/sidebar";
+import { BlogLayout } from "@/components/layout/blog-layout";
 import { getAllPosts, getPostBySlug, getRelatedPosts, getSidebarData } from "@/lib/posts";
 import { getBaseUrl, getCanonicalPostUrl } from "@/lib/site-url";
 import { formatDateThai } from "@/lib/utils/date";
@@ -72,26 +73,46 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <BlogLayout
       main={
-        <article className="item-post item-post-with-sidebar">
-          <h1>{meta.title}</h1>
-          <p className="post-meta">
-            {formatDateThai(meta.date)}
-            <span className="reading-time" aria-hidden>
-              ·
-            </span>
-            <span className="reading-time">{meta.readingTimeMinutes} นาทีในการอ่าน</span>
-          </p>
-          {meta.tags.length > 0 ? (
-            <div className="post-labels">
-              {meta.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
-          ) : null}
-          <PostShare title={meta.title} url={shareUrl} />
-          <div className="post-content">{content}</div>
+        <div className="w-full min-w-0">
+          <div className="mx-auto w-full min-w-0 max-w-[720px] px-4 md:px-0">
+            <Link
+              href="/"
+              className="mb-6 inline-flex text-sm font-medium text-gray-500 transition-colors duration-150 ease-out hover:text-blue-600"
+            >
+              ← กลับ
+            </Link>
+            <article className="min-w-0">
+              <h1 className="min-w-0 max-w-full text-balance text-2xl font-bold leading-snug break-words text-[#111] md:text-3xl">
+                {meta.title}
+              </h1>
+              <p className="mt-2 text-[13px] text-gray-400">
+                {formatDateThai(meta.date)}
+                <span className="mx-1" aria-hidden>
+                  ·
+                </span>
+                <span>{meta.readingTimeMinutes} นาทีในการอ่าน</span>
+              </p>
+              {meta.tags.length > 0 ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {meta.tags.map((tag) => (
+                    <Link
+                      key={tag}
+                      href={`/tag/${encodeURIComponent(tag)}`}
+                      className="inline-flex rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 transition-colors duration-150 ease-out hover:bg-blue-100"
+                    >
+                      {tag}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+              <div className="mt-8 border-t border-gray-100 pt-6">
+                <PostShare title={meta.title} url={shareUrl} />
+              </div>
+              <div className="article-prose mt-10">{content}</div>
+            </article>
+          </div>
           <RelatedPosts posts={related} />
-        </article>
+        </div>
       }
       sidebar={<Sidebar popularPosts={popularPosts} featuredPost={featuredPost} tagsWithCounts={tagsWithCounts} />}
     />

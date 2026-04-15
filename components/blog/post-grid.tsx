@@ -12,7 +12,7 @@ type PostGridProps = {
 };
 
 const gridClass =
-  "post-grid grid w-full grid-cols-1 gap-x-3 gap-y-5 sm:grid-cols-2 lg:grid-cols-3";
+  "grid w-full grid-cols-1 md:grid-cols-2 md:gap-x-6 md:gap-y-8";
 
 /**
  * โหลด cover แบบ eager สูงสุดเท่าจำนวนการ์ดต่อหน้า (`POSTS_PER_PAGE` = 12 บนหน้าแรก)

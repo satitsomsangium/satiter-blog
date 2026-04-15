@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const CONTENT_MAX_WIDTH = 860;
+const CONTENT_MAX_WIDTH = 720;
 
 export type MdxImageProps = {
   src: string;

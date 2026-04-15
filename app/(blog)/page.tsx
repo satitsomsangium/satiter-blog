@@ -1,7 +1,8 @@
+import { FeedSearch } from "@/components/blog/feed-search";
 import { PostGrid } from "@/components/blog/post-grid";
 import { PostPagination } from "@/components/blog/post-pagination";
-import { BlogLayout } from "@/components/layout/blog-layout";
 import { Sidebar } from "@/components/blog/sidebar";
+import { BlogLayout } from "@/components/layout/blog-layout";
 import { getAllPosts, getSidebarData } from "@/lib/posts";
 import { clampPage, getTotalPages, parsePageParam, sliceForPage } from "@/lib/utils/pagination";
 
@@ -21,6 +22,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     <BlogLayout
       main={
         <>
+          <FeedSearch />
           <PostGrid posts={pagePosts} />
           <PostPagination currentPage={page} totalPages={totalPages} pathname="/" />
         </>

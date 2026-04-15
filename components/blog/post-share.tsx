@@ -1,12 +1,30 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
+
+/** Web Share API ไม่มีบนเซิร์ฟเวอร์ — ต้องคืน false ตอน SSR/hydration แล้วค่อยอัปเดตหลัง mount */
+function subscribeNativeShare(onStoreChange: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const id = window.setTimeout(onStoreChange, 0);
+  return () => window.clearTimeout(id);
+}
+
+function getNativeShareSupportedSnapshot() {
+  return typeof navigator !== "undefined" && typeof navigator.share === "function";
+}
+
+function getNativeShareSupportedServerSnapshot() {
+  return false;
+}
 
 type PostShareProps = {
   title: string;
   /** URL เต็มจากเซิร์ฟเวอร์ (แนะนำตั้ง NEXT_PUBLIC_SITE_URL) */
   url: string;
 };
+
+const btn =
+  "inline-flex min-h-9 items-center justify-center gap-2 rounded-full px-3 text-xs font-semibold text-gray-700 transition-colors duration-150 ease-out hover:bg-gray-100";
 
 function IconFacebook() {
   return (
@@ -26,7 +44,7 @@ function IconX() {
 
 function LineMark() {
   return (
-    <span className="post-share-line-mark" aria-hidden>
+    <span className="rounded bg-[#06c755] px-1.5 py-1 text-[9px] font-bold leading-none text-white" aria-hidden>
       LINE
     </span>
   );
@@ -46,7 +64,11 @@ function readClientHref() {
 
 export function PostShare({ title, url }: PostShareProps) {
   const [copied, setCopied] = useState(false);
-  const [canNativeShare, setCanNativeShare] = useState(false);
+  const canNativeShare = useSyncExternalStore(
+    subscribeNativeShare,
+    getNativeShareSupportedSnapshot,
+    getNativeShareSupportedServerSnapshot,
+  );
 
   const clientHref = useSyncExternalStore(
     () => () => {},
@@ -87,10 +109,6 @@ export function PostShare({ title, url }: PostShareProps) {
       ]
     : [];
 
-  useEffect(() => {
-    setCanNativeShare(typeof navigator.share === "function");
-  }, []);
-
   async function copyLink() {
     if (!pageUrl) return;
     try {
@@ -112,18 +130,18 @@ export function PostShare({ title, url }: PostShareProps) {
   }
 
   return (
-    <div className="post-share" aria-label="แชร์โพสต์">
-      <span className="post-share-label">แชร์</span>
+    <div className="flex flex-wrap items-center gap-2" aria-label="แชร์โพสต์">
+      <span className="w-full text-[11px] font-bold uppercase tracking-widest text-gray-400 sm:mb-0 sm:mr-2 sm:w-auto">แชร์</span>
       {shareTargets.map(({ id, label, href, icon }) => (
-        <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="post-share-btn post-share-btn-icon" aria-label={label}>
+        <a key={id} href={href} target="_blank" rel="noopener noreferrer" className={`${btn} min-w-9 px-0`} aria-label={label}>
           {icon}
         </a>
       ))}
-      <button type="button" className="post-share-btn post-share-btn-text" onClick={copyLink} disabled={!pageUrl} aria-label="คัดลอกลิงก์">
+      <button type="button" className={btn} onClick={copyLink} disabled={!pageUrl} aria-label="คัดลอกลิงก์">
         {copied ? "คัดลอกแล้ว" : "คัดลอกลิงก์"}
       </button>
       {canNativeShare ? (
-        <button type="button" className="post-share-btn post-share-btn-text" onClick={nativeShare} disabled={!pageUrl} aria-label="แชร์ผ่านระบบ">
+        <button type="button" className={btn} onClick={nativeShare} disabled={!pageUrl} aria-label="แชร์ผ่านระบบ">
           แชร์…
         </button>
       ) : null}

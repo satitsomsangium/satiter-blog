@@ -34,6 +34,9 @@ function pageItems(current: number, total: number): (number | "gap")[] {
   return out;
 }
 
+const pill =
+  "inline-flex min-h-9 min-w-9 items-center justify-center rounded-full px-3 text-sm font-medium transition-colors duration-150 ease-out";
+
 export function PostPagination({ currentPage, totalPages, pathname, preserveQuery }: PostPaginationProps) {
   if (totalPages <= 1) {
     return null;
@@ -44,32 +47,35 @@ export function PostPagination({ currentPage, totalPages, pathname, preserveQuer
   const nextHref = currentPage < totalPages ? buildPaginatedHref(pathname, currentPage + 1, preserveQuery) : null;
 
   return (
-    <nav className="post-pagination" aria-label="เลือกหน้า">
-      <div className="post-pagination__inner">
+    <nav className="mt-8 flex w-full justify-center px-4 md:px-0" aria-label="เลือกหน้า">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {prevHref ? (
-          <Link href={prevHref} className="post-pagination__btn post-pagination__btn--prev" rel="prev">
+          <Link href={prevHref} className={`${pill} text-gray-700 hover:bg-gray-100`} rel="prev">
             ก่อนหน้า
           </Link>
         ) : (
-          <span className="post-pagination__btn post-pagination__btn--prev post-pagination__btn--disabled" aria-disabled>
+          <span className={`${pill} cursor-not-allowed text-gray-300`} aria-disabled>
             ก่อนหน้า
           </span>
         )}
 
-        <ul className="post-pagination__pages">
+        <ul className="flex flex-wrap items-center justify-center gap-1.5">
           {items.map((item, idx) =>
             item === "gap" ? (
-              <li key={`gap-${idx}`} className="post-pagination__gap" aria-hidden>
+              <li key={`gap-${idx}`} className="px-1 text-gray-400" aria-hidden>
                 …
               </li>
             ) : (
               <li key={item}>
                 {item === currentPage ? (
-                  <span className="post-pagination__page post-pagination__page--current" aria-current="page">
+                  <span className={`${pill} bg-blue-600 text-white`} aria-current="page">
                     {item}
                   </span>
                 ) : (
-                  <Link href={buildPaginatedHref(pathname, item, preserveQuery)} className="post-pagination__page">
+                  <Link
+                    href={buildPaginatedHref(pathname, item, preserveQuery)}
+                    className={`${pill} text-gray-700 hover:bg-gray-100`}
+                  >
                     {item}
                   </Link>
                 )}
@@ -79,11 +85,11 @@ export function PostPagination({ currentPage, totalPages, pathname, preserveQuer
         </ul>
 
         {nextHref ? (
-          <Link href={nextHref} className="post-pagination__btn post-pagination__btn--next" rel="next">
+          <Link href={nextHref} className={`${pill} text-gray-700 hover:bg-gray-100`} rel="next">
             ถัดไป
           </Link>
         ) : (
-          <span className="post-pagination__btn post-pagination__btn--next post-pagination__btn--disabled" aria-disabled>
+          <span className={`${pill} cursor-not-allowed text-gray-300`} aria-disabled>
             ถัดไป
           </span>
         )}

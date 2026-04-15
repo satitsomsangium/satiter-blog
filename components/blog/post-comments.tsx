@@ -6,7 +6,7 @@ const GiscusLazy = dynamic(
   () => import("./giscus-comments").then((m) => ({ default: m.GiscusComments })),
   {
     ssr: false,
-    loading: () => <p className="post-meta text-sm">กำลังโหลดความคิดเห็น…</p>,
+    loading: () => <p className="text-sm text-gray-400">กำลังโหลดความคิดเห็น…</p>,
   },
 );
 

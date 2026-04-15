@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 
+import { FeedSearch } from "@/components/blog/feed-search";
 import { PostGrid } from "@/components/blog/post-grid";
 import { PostPagination } from "@/components/blog/post-pagination";
-import { BlogLayout } from "@/components/layout/blog-layout";
 import { Sidebar } from "@/components/blog/sidebar";
+import { BlogLayout } from "@/components/layout/blog-layout";
 import { filterPostMetasByQuery, getAllPosts, getSidebarData } from "@/lib/posts";
 import { clampPage, getTotalPages, parsePageParam, sliceForPage } from "@/lib/utils/pagination";
 
@@ -36,14 +37,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <BlogLayout
       main={
         <>
-          <header className="mb-5 border-b-2 border-[var(--border-soft)] pb-4">
-            <h1 className="text-[18px] font-bold leading-snug text-[var(--title-color)]">ค้นหา</h1>
+          <FeedSearch />
+          <header className="mb-6 px-4 md:px-0">
+            <h1 className="text-xl font-bold text-[#111] md:text-2xl">ค้นหา</h1>
             {query ? (
-              <p className="post-meta mt-1">
-                คำค้น: <span className="font-medium text-[var(--title-color)]">{query}</span> — พบ {results.length} โพสต์
+              <p className="mt-1 text-[13px] text-gray-400">
+                คำค้น: <span className="font-medium text-gray-700">{query}</span> — พบ {results.length} โพสต์
               </p>
             ) : (
-              <p className="post-meta mt-1">พิมพ์คำค้นในช่องด้านบน</p>
+              <p className="mt-1 text-[13px] text-gray-400">พิมพ์คำค้นในช่องด้านบน</p>
             )}
           </header>
           {query && results.length > 0 ? (
@@ -53,7 +55,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </>
           ) : null}
           {query && results.length === 0 ? (
-            <p className="text-[14px] text-[var(--post-meta)]">ไม่พบโพสต์ที่ตรงกับคำค้นนี้</p>
+            <p className="px-4 text-sm text-gray-500 md:px-0">ไม่พบโพสต์ที่ตรงกับคำค้นนี้</p>
           ) : null}
         </>
       }

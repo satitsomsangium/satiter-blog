@@ -22,13 +22,14 @@ export function BackToTop() {
   return (
     <button
       type="button"
-      className={`back-to-top${visible ? " is-visible" : ""}`}
+      className={[
+        "fixed bottom-5 right-4 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-white text-lg leading-none text-gray-700 shadow-sm transition-all duration-150 ease-out hover:bg-gray-50 hover:text-blue-600",
+        visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0",
+      ].join(" ")}
       onClick={goTop}
       aria-label="กลับขึ้นด้านบน"
     >
-      <span aria-hidden className="text-lg leading-none">
-        ↑
-      </span>
+      <span aria-hidden>↑</span>
     </button>
   );
 }
