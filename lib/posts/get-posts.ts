@@ -48,6 +48,55 @@ function toPostMeta(slug: string, fm: ReturnType<typeof normalizePostFrontmatter
   };
 }
 
+/** Plain-text excerpt from MDX body for meta descriptions (no MDX compile). */
+function mdxBodyToPlainExcerpt(mdxBody: string, maxLen: number): string {
+  const collapsed = mdxBody
+    .replace(/^import\s+.+$/gm, "")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`\n]+`/g, " ")
+    .replace(/<[^>\n]+\/?>/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[#>*_\-~|]+/g, "")
+    .replace(/\{[^}\n]*\}/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!collapsed) {
+    return "";
+  }
+  if (collapsed.length <= maxLen) {
+    return collapsed;
+  }
+  return `${collapsed.slice(0, Math.max(0, maxLen - 1)).trimEnd()}…`;
+}
+
+export type PostSeoSnapshot = {
+  meta: PostMeta;
+  /** First ~160 characters of body as plain text. */
+  excerpt: string;
+};
+
+/** Metadata-only post load (no MDX compile) — for `generateMetadata`. */
+export async function getPostSeoSnapshot(slug: string): Promise<PostSeoSnapshot | null> {
+  let source: string;
+  try {
+    source = await readPostSource(slug);
+  } catch {
+    return null;
+  }
+
+  const parsed = matter(source);
+  const fm = normalizePostFrontmatter(parsed.data as Record<string, unknown>);
+  if (!fm.published) {
+    return null;
+  }
+
+  const body = parsed.content;
+  const meta = toPostMeta(slug, fm, body);
+  const excerpt = mdxBodyToPlainExcerpt(body, 160);
+  return { meta, excerpt };
+}
+
 async function loadAllPostsUncached(): Promise<PostMeta[]> {
   const fileNames = await listMdxFileNames();
   const posts = await Promise.all(

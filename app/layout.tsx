@@ -30,11 +30,21 @@ export const metadata: Metadata = {
     siteName: "SATITER",
     title: "SATITER",
     description: "Personal blog by SATITER",
+    url: "/",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "SATITER",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "SATITER",
     description: "Personal blog by SATITER",
+    images: ["/opengraph-image"],
   },
 };
 

@@ -6,7 +6,7 @@ import { PostShare } from "@/components/blog/post-share";
 import { RelatedPosts } from "@/components/blog/related-posts";
 import { Sidebar } from "@/components/blog/sidebar";
 import { BlogLayout } from "@/components/layout/blog-layout";
-import { getAllPosts, getPostBySlug, getRelatedPosts, getSidebarData } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getPostSeoSnapshot, getRelatedPosts, getSidebarData } from "@/lib/posts";
 import { getBaseUrl, getCanonicalPostUrl } from "@/lib/site-url";
 import { formatDateThai } from "@/lib/utils/date";
 
@@ -22,13 +22,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const base = getBaseUrl();
-  const post = await getPostBySlug(slug);
+  const snapshot = await getPostSeoSnapshot(slug);
 
-  if (!post) {
+  if (!snapshot) {
     return { title: "ไม่พบโพสต์ | SATITER" };
   }
 
-  const { title, description, date, coverImage, tags } = post.meta;
+  const { meta, excerpt } = snapshot;
+  const description = excerpt.trim() || meta.description;
+  const { title, date, coverImage, tags } = meta;
   const canonical = `${base}/blog/${slug}`;
 
   return {

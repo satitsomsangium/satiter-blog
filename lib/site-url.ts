@@ -1,3 +1,6 @@
+/** Production origin for sitemaps, robots, and fixed absolute SEO assets. */
+export const PRODUCTION_SITE_ORIGIN = "https://satiter.com";
+
 /**
  * Canonical site origin without trailing slash.
  * Prefer `NEXT_PUBLIC_SITE_URL`; on Vercel previews fall back to `VERCEL_URL`.
